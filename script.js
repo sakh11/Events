@@ -162,13 +162,17 @@ gameEventLogContainer.appendChild(gameEventLog)
 */
 
 /* Characters */
-let playerCharacter = {Name: "Player", Health: 100, Defense: 2}
+let playerCharacter = {Name: "Adventurer", Health: 100, Defense: 2}
 let monsterCharacter = {Name: "Rabbit", Health: 50, Defense: 3}
 /* /Characters */
 
 
+let gameOver = false;
+
+
+
 /* 
-    Function to simulate a 6-sided die
+    Die roll function
     
     We define our die as six sided by writing (parameter = 6) in the parameter field. This is what is refered to as a default parameter. The parameter name could be anything, we decided to name ours "sides" for clarity as we are defaulting to a 6-sided die. 
     
@@ -187,7 +191,7 @@ function rollDie(sides = 6) {
     return Math.floor(Math.random() * sides) +1;
   }
 
-/* /Function to simulate a 6-sided die */
+/* /Die roll function */
 
 
 /* 
@@ -206,22 +210,17 @@ function playerActionAttack() {
      const playerAttackRoll = rollDie();
      const playerAttackResult = Math.max(0, playerAttackRoll - monsterCharacter.Defense);
      return `${playerCharacter.Name} attacks ${monsterCharacter.Name} for ${playerAttackResult} damage!`;
-  };
+    };
 
-  
-function monsterActionAttack() {
-    const monsterAttackRoll = rollDie();
-    if (playerActionDefend()) {
-        const monsterAttackResult = Math.max(0, monsterAttackRoll - playerTemporaryDefense);
-        return `${monsterCharacter.Name} attacks ${playerCharacter.Name} for ${monsterAttackResult} damage!`;
-    } else {
+  function monsterActionAttack() {
+        const monsterAttackRoll = rollDie();
         const monsterAttackResult = Math.max(0, monsterAttackRoll - playerCharacter.Defense);
         return `${monsterCharacter.Name} attacks ${playerCharacter.Name} for ${monsterAttackResult} damage!`;
-    }
-    
-};
-  /* /Player attack and Monster attack functions  */
+    };
+/* /Player attack and Monster attack functions  */
   
+
+
 /* Player defend function */
 
 function playerActionDefend() {
@@ -232,13 +231,42 @@ function playerActionDefend() {
 
 const playerTemporaryDefense = playerActionDefend();
 
-/*
-    For the defend roll the roll number must add the result to the existing defense number, in a new object? And at the end of the turn the defensive stat must return to its default number.
-*/
-
 /* /Player defend function */
+
+let rollInitiative = rollDie()
+
+
 
 
 /* 
     /Game
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Saved for later in case it proves useful.
+/* function monsterActionAttack() {
+    const monsterAttackRoll = rollDie();
+    if (playerActionDefend()) {
+        const monsterAttackResult = Math.max(0, monsterAttackRoll - playerTemporaryDefense);
+        return `${monsterCharacter.Name} attacks ${playerCharacter.Name} for ${monsterAttackResult} damage!`;
+    } else {
+        const monsterAttackResult = Math.max(0, monsterAttackRoll - playerCharacter.Defense);
+        return `${monsterCharacter.Name} attacks ${playerCharacter.Name} for ${monsterAttackResult} damage!`;
+    }
+    
+}; */
