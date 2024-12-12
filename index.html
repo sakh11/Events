@@ -4,9 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <script src="script2.js" defer></script>
     <title>Javascript - Events</title>
 </head>
 <body>
+    
+    <header>
+        <h1 id="game-title">
+            Adventurer vs Monster
+        </h1>
+        <h2 id="round-counter">
+            Round #1
+        </h2>
+    </header>
+
+    <main>
+        <section class="section" id="character-containers">
+            <div class="character-container gameStateOff" id="player-container">
+                <h3 class="character-name" id="player-name">
+                    Adventurer
+                </h3>
+                <div class="character-stats-container">
+                    <p class="character-health">
+                        Health Points: 100/100 
+                    </p>
+                    <p class="character-attack-power">
+                        Attack power: 1-6
+                    </p>
+                    <p class="character-defense">
+                        Defense: 3
+                    </p>
+                </div>
+            </div>
+
+            <div class="character-container gameStateOff" id="monster-container">    
+                <h3 class="character-name" id="player-name">
+                    Monster
+                </h3>
+                <div class="character-stats-container">
+                    <p class="character-health">
+                        Health Points: 50/50 
+                    </p>
+                    <p class="character-attack-power">
+                        Attack power: 1-6
+                    </p>
+                    <p class="character-defense">
+                        Defense: 3
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="game-menu-container">
+            <div class="button-container" id="player-button-container">
+                <button class="player-action-button" id="player-attack-button">ATTACK</button>
+                <button class="player-action-button" id="player-defend-button">DEFEND</button>
+            </div>
+            <div class="button-container" id="main-menu-container">
+                <button class="menu-button" id="start-game-button">START GAME</button>
+                <button class="menu-button" id="reset-game-button">RESET</button>
+                <button class="menu-button" id="end-game-button">END GAME</button>
+            </div>
+        </section>
+
+        <section class="section" id="game-event-log">
+            <h3 class="subtitle" id="event-log-title">Event Log</h3>
+            <div id="event-log-container">
+                <p class="event">Example: Adventurer attacks and hits the Monster for 2 points of damage.</p>
+            </div>
+        </section>
+
+    </main>
 </body>
 </html>

@@ -29,7 +29,7 @@
 */
 
 /* Header */
-const headerElement = document.createElement("header")
+/* const headerElement = document.createElement("header")
 headerElement.id = "headerElement"
 document.body.appendChild(headerElement)
 
@@ -41,13 +41,13 @@ headerElement.appendChild(gameTitle)
 const roundCounter = document.createElement("p")
 roundCounter.id = "round-counter"
 roundCounter.textContent = ("Round #")
-headerElement.appendChild(roundCounter)
+headerElement.appendChild(roundCounter) */
 /* /Header */
 
 
 
 /* Main */
-const mainElement = document.createElement("main")
+/* const mainElement = document.createElement("main")
 document.body.appendChild(mainElement)
 
 const mainSection = document.createElement("section")
@@ -56,13 +56,13 @@ mainElement.appendChild(mainSection)
 
 const entityContainer = document.createElement("div")
 entityContainer.id = "entity-container"
-mainSection.appendChild(entityContainer)
+mainSection.appendChild(entityContainer) */
 /* /Main */
 
 
 
 /* Player container */
-const playerContainer = document.createElement("div")
+/* const playerContainer = document.createElement("div")
 playerContainer.id = "player-container"
 playerContainer.className = "entity-container"
 entityContainer.appendChild(playerContainer)
@@ -85,13 +85,13 @@ playerStatsContainer.appendChild(playerAttack)
 const playerDefense = document.createElement("p")
 playerDefense.id = "player-defense"
 playerDefense.className = "entity-defense"
-playerStatsContainer.appendChild(playerDefense)
+playerStatsContainer.appendChild(playerDefense) */
 /* /Player container */
 
 
 
 /* Monster container */
-const monsterContainer = document.createElement("div")
+/* const monsterContainer = document.createElement("div")
 monsterContainer.id = "monster-container"
 monsterContainer.className = "entity-container"
 entityContainer.appendChild(monsterContainer)
@@ -114,13 +114,13 @@ monsterStatsContainer.appendChild(monsterAttack)
 const monsterDefense = document.createElement("P")
 monsterDefense.id = "monster-defense"
 monsterDefense.className = "entity-defense"
-monsterStatsContainer.appendChild(monsterDefense)
+monsterStatsContainer.appendChild(monsterDefense) */
 /* /Monster container */
 
 
 
 /* User Interaction */
-const playerUserInterfaceContainer = document.createElement("div")
+/* const playerUserInterfaceContainer = document.createElement("div")
 playerUserInterfaceContainer.id = "player-UI-container"
 mainSection.appendChild(playerUserInterfaceContainer)
 
@@ -136,20 +136,20 @@ playerUserInterfaceContainer.appendChild(playerDefendButton)
 
 const endGameButton = document.createElement("button")
 endGameButton.id = "end-game-button"
-endGameButton.textContent = "End game"
-playerUserInterfaceContainer.appendChild(endGameButton)
+endGameButton.textContent = "End game" */
+/* playerUserInterfaceContainer.appendChild(endGameButton) */
 /* /User Interaction */
 
 
 
 /* Game event log */
-const gameEventLogContainer = document.createElement("div")
+/* const gameEventLogContainer = document.createElement("div")
 gameEventLogContainer.id = "gameEventLogContainer"
 mainSection.appendChild(gameEventLogContainer)
 
 const gameEventLog = document.createElement("div")
 gameEventLog.id = "game-event-log"
-gameEventLogContainer.appendChild(gameEventLog)
+gameEventLogContainer.appendChild(gameEventLog) */
 /* /Game event log */
 
 /* 
@@ -157,18 +157,11 @@ gameEventLogContainer.appendChild(gameEventLog)
 */
 
 
-/* 
-    Game
-*/
 
 /* Characters */
-let playerCharacter = {Name: "Adventurer", Health: 100, Defense: 2}
-let monsterCharacter = {Name: "Rabbit", Health: 50, Defense: 3}
+let playerCharacter = {Name: "Adventurer", Health: 100, Defense: 0}
+let monsterCharacter = {Name: "Rabbit", Health: 50, Defense: 0}
 /* /Characters */
-
-
-let gameOver = false;
-
 
 
 /* 
@@ -195,7 +188,7 @@ function rollDie(sides = 6) {
 
 
 /* 
-    Player attack and Monster attack functions
+    Character attack function
     
     With this function the player's attack is defined. It uses the rolldie() function to roll an attack number between 1-6. 
 
@@ -203,49 +196,176 @@ function rollDie(sides = 6) {
     
     Using Math.max we ensure that the total amount will not be negative. By adding 0, it will be the highest number among the parameters should the final attack result in a negative number.
 
+    The damageReceieved function is called and each function has their opponent's character as the first argument and their own final attack result as the second argument. This ensures that the value in the final attack result will be subracted from the character's health.
+
     Once the function has calculated the final attack result, it returns a string with the attacker's name, amount of damage dealt, and the target's name.
 
 */
+
+//Player Attack Function
 function playerActionAttack() {
      const playerAttackRoll = rollDie();
      const playerAttackResult = Math.max(0, playerAttackRoll - monsterCharacter.Defense);
-     return `${playerCharacter.Name} attacks ${monsterCharacter.Name} for ${playerAttackResult} damage!`;
+     damageReceived(monsterCharacter, playerAttackResult)
+     return `${playerCharacter.Name} attacks ${monsterCharacter.Name} and deals ${playerAttackResult} damage!`;
     };
 
-  function monsterActionAttack() {
-        const monsterAttackRoll = rollDie();
-        const monsterAttackResult = Math.max(0, monsterAttackRoll - playerCharacter.Defense);
-        return `${monsterCharacter.Name} attacks ${playerCharacter.Name} for ${monsterAttackResult} damage!`;
+//Monster Attack Function
+function monsterActionAttack() {
+    const monsterAttackRoll = rollDie();
+    const monsterAttackResult = Math.max(0, monsterAttackRoll - playerCharacter.Defense);
+    damageReceived(playerCharacter, monsterAttackResult)
+    return `${monsterCharacter.Name} attacks ${playerCharacter.Name} and deals ${monsterAttackResult} damage!`;
     };
 /* /Player attack and Monster attack functions  */
   
 
+/* 
+    Damage Received Function 
+
+    Subtracts a number from a character's health value equal to the attack's damage number. 
+*/
+function damageReceived(character, damage) {
+    character.Health -= damage;
+    if (character.Health < 0) {
+        character.Health = 0;
+    }
+}
+/* /Damage Received Function */
+
+
+
+/* Character Action - Defend */
+
+//Function that increments a character's defense. The character and the additional defense value are determined by arguments added when the function is called. 
+function characterActionDefend(character, defense) {
+    character.Defense += defense;
+    if (character.Defense > 6) {
+        character.Defense = 6;
+    }
+}
+
+//Eventlisteners attached to the player action defend button. When clicked it increments the player character's defense by a random value using the rollDie function and limiting it to 3 by adding it as an argument. Overrding it's default max value of 6.
+document.getElementById("player-defend-button").addEventListener("click", () => {
+    characterActionDefend(playerCharacter, rollDie(3));
+    })
+/* /Character Action - Defend*/
+
+
+
+
+
+
+
+
+
+
+
 
 /* Player defend function */
 
-function playerActionDefend() {
+/* function playerActionDefend() {
     const playerDefendRoll = rollDie(3);
     const playerNewDefense = playerDefendRoll + playerCharacter.Defense;
     return playerNewDefense;
 }
 
-const playerTemporaryDefense = playerActionDefend();
+const playerTemporaryDefense = playerActionDefend(); */
 
 /* /Player defend function */
 
-let rollInitiative = rollDie()
+
+
+/* Function that has characters roll for initiative, highest initiative roll is the starting character  */
+function rollForInitiative() { 
+    let playerInitiativeRoll = rollDie()
+    let monsterInitiativeRoll = rollDie()
+
+    if (playerInitiativeRoll > monsterInitiativeRoll) {
+        return `${playerCharacter.Name} rolled highest and will start first!`
+    
+    } else if (monsterInitiativeRoll > playerInitiativeRoll) {
+        return `${monsterCharacter.Name} rolled highest and will start first!`
+    
+    } else {
+        return `The rolls resulted in a tie, roll again!`
+    }
+}
+/* /Function that has characters roll for initiative, highest initiative roll is the starting character  */
+
+
+
+// Toggle gameState start/end (Currently only displays and hides the characters)
+const startGameButton = document.getElementById("start-game-button")
+const endGameButton = document.getElementById("end-game-button")
+const characterContainer = document.getElementsByClassName("character-container")
+
+startGameButton.addEventListener("click", () => {
+    toggleGameStateClasses(true)
+    startGame()
+})
+
+endGameButton.addEventListener("click", () => {
+    toggleGameStateClasses(false)
+    endGame()
+})
+
+function toggleGameStateClasses(gameStateStart) {
+    Array.from(characterContainer).forEach(parameter => {
+        if (gameStateStart) {
+            parameter.classList.remove("gameStateOff")
+            parameter.classList.add("gameStateStart")
+        } else {
+            parameter.classList.remove("gameStateStart")
+            parameter.classList.add("gameStateOff")
+        }
+    })
+}
+// /Toggle gameState start/end
+
+
+
+let gameState = "notStarted"
 
 
 
 
+function startGame() {
+
+};
+
+function endGame(playerHealth, monsterHealth) {
+    
+    if (playerHealth.Health <= 0) {
+        return `${playerCharacter.Name} has been defeated. ${monsterCharacter.Name} wins and earns 1 point.`
+    } else if (monsterHealth.Health <= 0) {
+        return `${monsterCharacter.Name} has been defeated. ${playerCharacter.Name} wins and earns 1 point.`
+    } else {
+        newRound()
+    }
+};
+
+/* function resetGame() {
+
+};
+ */
+function newRound() {
+
+}
 
 
+function playerTurn() {
 
-/* 
-    /Game
-*/
+};
+
+function monsterTurn() {
+
+};
 
 
+function eventLog() {
+
+}
 
 
 
