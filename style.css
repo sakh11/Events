@@ -46,9 +46,9 @@ section#character-containers {
     align-items: center;
 }
 
-.gameStateOff {
-    display: none;
-}
+/* .gameStateOff {
+    
+} */
 
 .gameStateStart {
     display: flex;
@@ -78,4 +78,24 @@ button {
 
 .menu-button {
     padding: 1rem 1rem;
+}
+
+#event-log-container {
+    border: 2px solid white;
+    width: 100%;
+    height: 300px;
+    overflow: auto;
+    padding: 2rem;
+}
+
+#event-message-round {
+    padding: 2rem 0;
+    font-size: 20px;
+    border-bottom: 1px solid white;
+    /* margin-bottom: 5px; */
+}
+
+.event-message {
+    padding: 0.7rem 0;
+    letter-spacing: 1px;
 }

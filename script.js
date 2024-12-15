@@ -19,160 +19,116 @@
     3. Lag et lite nettspill der brukeren må trykke på knapper på en nettside. Hva det skal handle om og gjøre er opp til deg, men det skal minst inneholde disse elementene:
 
         1. En life counter
+        Det er så langt to karakterer i spillet, spilleren og en fiende. De er begge satt opp som objekter og har en key value for "Health" eller "life". 
+
         2. Poeng
+        Det er satt opp et poeng system i form av "victories". Hver gang en karakter bekjemper den andre får de et poeng.
+
         3. En form for interaksjon, enten vha knapper på skjermen eller tastetrykk
+        Spillet er avhenging av en nettleser og spilleren har 2 valg som har utfall i spillet. De to valgene er "attack" og "heal". Uten om så er det tre meny valg, "start game"(Starter spillet), "reset"(instiller karakter objektene til standard) og "end game"(avslutter spillet)
+
         4. Flere valg som må tas underveis. Hva du legger i ordet “valg” er opp til deg.
-*/
-
-/* 
-    HTML Elements
-*/
-
-/* Header */
-/* const headerElement = document.createElement("header")
-headerElement.id = "headerElement"
-document.body.appendChild(headerElement)
-
-const gameTitle = document.createElement("h1")
-gameTitle.id = "game-title"
-gameTitle.textContent = "Adventure Game"
-headerElement.appendChild(gameTitle)
-
-const roundCounter = document.createElement("p")
-roundCounter.id = "round-counter"
-roundCounter.textContent = ("Round #")
-headerElement.appendChild(roundCounter) */
-/* /Header */
-
-
-
-/* Main */
-/* const mainElement = document.createElement("main")
-document.body.appendChild(mainElement)
-
-const mainSection = document.createElement("section")
-mainSection.id = "main-section"
-mainElement.appendChild(mainSection)
-
-const entityContainer = document.createElement("div")
-entityContainer.id = "entity-container"
-mainSection.appendChild(entityContainer) */
-/* /Main */
-
-
-
-/* Player container */
-/* const playerContainer = document.createElement("div")
-playerContainer.id = "player-container"
-playerContainer.className = "entity-container"
-entityContainer.appendChild(playerContainer)
-
-const playerStatsContainer = document.createElement("div")
-playerStatsContainer.id = "player-stats"
-playerStatsContainer.className = "entity-stats-container"
-playerContainer.appendChild(playerStatsContainer)
-
-const playerHealth = document.createElement("p")
-playerHealth.id = "player-health"
-playerHealth.className = "entity-health"
-playerStatsContainer.appendChild(playerHealth)
-
-const playerAttack = document.createElement("p")
-playerAttack.id = "player-attack"
-playerAttack.className = "entity-attack"
-playerStatsContainer.appendChild(playerAttack)
-
-const playerDefense = document.createElement("p")
-playerDefense.id = "player-defense"
-playerDefense.className = "entity-defense"
-playerStatsContainer.appendChild(playerDefense) */
-/* /Player container */
-
-
-
-/* Monster container */
-/* const monsterContainer = document.createElement("div")
-monsterContainer.id = "monster-container"
-monsterContainer.className = "entity-container"
-entityContainer.appendChild(monsterContainer)
-
-const monsterStatsContainer = document.createElement("div")
-monsterStatsContainer.id = "monster-stats"
-monsterStatsContainer.className = "entity-stats-container"
-monsterContainer.appendChild(monsterStatsContainer)
-
-const monsterHealth = document.createElement("p")
-monsterHealth.id = "monster-health"
-monsterHealth.className = "entity-health"
-monsterStatsContainer.appendChild(monsterHealth)
-
-const monsterAttack = document.createElement("p")
-monsterAttack.id = "monster-attack"
-monsterAttack.className = "entity-attack"
-monsterStatsContainer.appendChild(monsterAttack)
-
-const monsterDefense = document.createElement("P")
-monsterDefense.id = "monster-defense"
-monsterDefense.className = "entity-defense"
-monsterStatsContainer.appendChild(monsterDefense) */
-/* /Monster container */
-
-
-
-/* User Interaction */
-/* const playerUserInterfaceContainer = document.createElement("div")
-playerUserInterfaceContainer.id = "player-UI-container"
-mainSection.appendChild(playerUserInterfaceContainer)
-
-const playerAttackButton = document.createElement("button")
-playerAttackButton.id = "player-attack-button"
-playerAttackButton.textContent = "Attack"
-playerUserInterfaceContainer.appendChild(playerAttackButton)
-
-const playerDefendButton = document.createElement("button")
-playerDefendButton.id = "player-defend-button"
-playerDefendButton.textContent = "Defend"
-playerUserInterfaceContainer.appendChild(playerDefendButton)
-
-const endGameButton = document.createElement("button")
-endGameButton.id = "end-game-button"
-endGameButton.textContent = "End game" */
-/* playerUserInterfaceContainer.appendChild(endGameButton) */
-/* /User Interaction */
-
-
-
-/* Game event log */
-/* const gameEventLogContainer = document.createElement("div")
-gameEventLogContainer.id = "gameEventLogContainer"
-mainSection.appendChild(gameEventLogContainer)
-
-const gameEventLog = document.createElement("div")
-gameEventLog.id = "game-event-log"
-gameEventLogContainer.appendChild(gameEventLog) */
-/* /Game event log */
-
-/* 
-    /HTML Elements
+        Flere valg i dette spillet for en spiller vil være "attack" eller "heal". Spilleren må selv velge hvilke av disse de vil bruke for å nå ende målet som er å vinne mot fienden.  
 */
 
 
+// Character Objects
+let playerCharacter = {Name: "Adventurer", Attack: 0, Health: 25, Defense: 2, Initiative: 0, Victories: 0};
+let enemyCharacter = {Name: "Bandit", Attack: 0, Health: 30, Defense: 4, Initiative: 0, Victories: 0};
 
-/* Characters */
-let playerCharacter = {Name: "Adventurer", Health: 100, Defense: 0}
-let monsterCharacter = {Name: "Rabbit", Health: 50, Defense: 0}
-/* /Characters */
+// Round Counter
+let roundCounter = 1;
+let playerTurn = null;
+
+// Player HTML elements
+const playerNameDisplay = document.getElementById("player-name")
+const playerVictoriesDisplay = document.getElementById("player-victories")
+const playerHealthDisplay = document.getElementById("player-health")
+const playerAttackDisplay = document.getElementById("player-attack")
+const playerDefenseDisplay = document.getElementById("player-defense")
+const playerInitiativeDisplay = document.getElementById("player-initative")
+
+// Enemy HTML elements
+const enemyNameDisplay = document.getElementById("enemy-name")
+const enemyVictoryDisplay = document.getElementById("enemy-victories")
+const enemyHealthDisplay = document.getElementById("enemy-health")
+const enemyAttackDisplay = document.getElementById("enemy-attack")
+const enemyDefenseDisplay = document.getElementById("enemy-defense")
+const enemyInitiativeDisplay = document.getElementById("enemy-initiative")
+
+// Round title HTML element
+const roundCounterTitle = document.getElementById("round-counter")
+
+// Event log HTML element
+const eventLog = document.getElementById("event-log-container")
+
+// Player Actions HTML elements
+const actionAttackButton = document.getElementById("player-attack-button")
+const actionHealButton = document.getElementById("player-heal-button")
+
+// Game Menu Buttons HTML elements
+const menuButtonStart = document.getElementById("start-game-button")
+const menuButtonReset = document.getElementById("reset-game-button")
+const menuButtonEnd = document.getElementById("end-game-button")
+
+// Event Listeners
+menuButtonStart.addEventListener("click", startGame);
+menuButtonReset.addEventListener("click", resetGame);
+menuButtonEnd.addEventListener("click", endGame);
+
+actionAttackButton.addEventListener("click", () => {
+    if (playerTurn) {
+        playerAction("attack");
+        playerTurn = false;
+        actionAttackButton.disabled = true;
+        actionHealButton.disabled = true;
+    }
+})
+actionHealButton.addEventListener("click", () => {
+    if (playerTurn) {
+        playerAction("heal");
+        playerTurn = false;
+        actionAttackButton.disabled = true;
+        actionHealButton.disabled = true;
+    }
+})
 
 
+// Textcontent Player Stats
+playerNameDisplay.textContent = `${playerCharacter.Name}`
+playerVictoriesDisplay.textContent = `Victories: ${playerCharacter.Victories}`
+playerHealthDisplay.textContent = `Health: ${playerCharacter.Health}`
+playerAttackDisplay.textContent = `Attack: ${playerCharacter.Attack}`
+playerDefenseDisplay.textContent = `Defense: ${playerCharacter.Defense}`
+
+// Textcontent Enemy Stats
+enemyNameDisplay.textContent = `${enemyCharacter.Name}`
+enemyVictoryDisplay.textContent = `Victories ${enemyCharacter.Victories}`
+enemyHealthDisplay.textContent = `Health: ${enemyCharacter.Health}`
+enemyAttackDisplay.textContent = `Attack: ${enemyCharacter.Attack}`
+enemyDefenseDisplay.textContent = `Defense: ${enemyCharacter.Defense}`
+
+
+// Observes to see if new elements appear in the event log div, and when a new element is added it automatically scrolls to the bottom in the window
+const eventLogObserver = new MutationObserver(scrollToBottom)
+const config = {childList: true};
+eventLogObserver.observe(eventLog, config)
+
+function scrollToBottom() {
+    eventLog.scrollTop = eventLog.scrollHeight;
+  }
+
+
+  
 /* 
     Die roll function
-    
+
     We define our die as six sided by writing (parameter = 6) in the parameter field. This is what is refered to as a default parameter. The parameter name could be anything, we decided to name ours "sides" for clarity as we are defaulting to a 6-sided die. 
-    
+
     As this is a die we take advantage of the math object call on two of it's methods, .floor and .random.
 
     .random will give us a random number between 0 and 1. 
-    
+
     And .floor rounds the number down to the nearest whole number.
 
     The random number we get is multiplied with the amount of sides our die has.
@@ -180,216 +136,260 @@ let monsterCharacter = {Name: "Rabbit", Health: 50, Defense: 0}
     And we add +1 to the result we get. This is because the numbers we will recieve is between 0 to 5. So our final result will be between 1 and 6.
 
 */
+// Die Roll Mechanic
+// Emulates a 6 sided die when called. Can emulate other dice if an argument is added when calling the function.
 function rollDie(sides = 6) {
     return Math.floor(Math.random() * sides) +1;
   }
 
-/* /Die roll function */
+
+// Determins who the first roun
+function rollInitiative(character) {
+    character.Initiative += rollDie()
+}
 
 
-/* 
-    Character attack function
-    
-    With this function the player's attack is defined. It uses the rolldie() function to roll an attack number between 1-6. 
+// Rolls how much damage a character deals
+function dealDamage(character) {
+    character.Attack += rollDie();
+}
 
-    The attack must go through the character's defensive stat before it can be applied to it's health. So we subtract the character's total defensive stat from the attack roll. And then apply the remaining number to the character's health pool. 
-    
-    Using Math.max we ensure that the total amount will not be negative. By adding 0, it will be the highest number among the parameters should the final attack result in a negative number.
 
-    The damageReceieved function is called and each function has their opponent's character as the first argument and their own final attack result as the second argument. This ensures that the value in the final attack result will be subracted from the character's health.
-
-    Once the function has calculated the final attack result, it returns a string with the attacker's name, amount of damage dealt, and the target's name.
-
-*/
-
-//Player Attack Function
-function playerActionAttack() {
-     const playerAttackRoll = rollDie();
-     const playerAttackResult = Math.max(0, playerAttackRoll - monsterCharacter.Defense);
-     damageReceived(monsterCharacter, playerAttackResult)
-     return `${playerCharacter.Name} attacks ${monsterCharacter.Name} and deals ${playerAttackResult} damage!`;
-    };
-
-//Monster Attack Function
-function monsterActionAttack() {
-    const monsterAttackRoll = rollDie();
-    const monsterAttackResult = Math.max(0, monsterAttackRoll - playerCharacter.Defense);
-    damageReceived(playerCharacter, monsterAttackResult)
-    return `${monsterCharacter.Name} attacks ${playerCharacter.Name} and deals ${monsterAttackResult} damage!`;
-    };
-/* /Player attack and Monster attack functions  */
-  
-
-/* 
-    Damage Received Function 
-
-    Subtracts a number from a character's health value equal to the attack's damage number. 
-*/
-function damageReceived(character, damage) {
+// Function to resolve damage taken
+function takeDamage(character, damage) {
     character.Health -= damage;
+    // If statement makes sure health does not go below 0
     if (character.Health < 0) {
         character.Health = 0;
     }
 }
-/* /Damage Received Function */
 
 
-
-/* Character Action - Defend */
-
-//Function that increments a character's defense. The character and the additional defense value are determined by arguments added when the function is called. 
-function characterActionDefend(character, defense) {
-    character.Defense += defense;
-    if (character.Defense > 6) {
-        character.Defense = 6;
+// Heal mechanic
+function healHealth(character) {
+    character.Health += rollDie()
+    // If statement makes sure health does not go above 25
+    if (character.Health > 25) {
+        character.Health = 25;
     }
 }
 
-//Eventlisteners attached to the player action defend button. When clicked it increments the player character's defense by a random value using the rollDie function and limiting it to 3 by adding it as an argument. Overrding it's default max value of 6.
-document.getElementById("player-defend-button").addEventListener("click", () => {
-    characterActionDefend(playerCharacter, rollDie(3));
-    })
-/* /Character Action - Defend*/
 
-
-
-
-
-
-
-
-
-
-
-
-/* Player defend function */
-
-/* function playerActionDefend() {
-    const playerDefendRoll = rollDie(3);
-    const playerNewDefense = playerDefendRoll + playerCharacter.Defense;
-    return playerNewDefense;
+// Resets character attack
+function resetAttack(character) {
+    character.Attack = 0;
 }
 
-const playerTemporaryDefense = playerActionDefend(); */
 
-/* /Player defend function */
-
-
-
-/* Function that has characters roll for initiative, highest initiative roll is the starting character  */
-function rollForInitiative() { 
-    let playerInitiativeRoll = rollDie()
-    let monsterInitiativeRoll = rollDie()
-
-    if (playerInitiativeRoll > monsterInitiativeRoll) {
-        return `${playerCharacter.Name} rolled highest and will start first!`
-    
-    } else if (monsterInitiativeRoll > playerInitiativeRoll) {
-        return `${monsterCharacter.Name} rolled highest and will start first!`
-    
-    } else {
-        return `The rolls resulted in a tie, roll again!`
-    }
+// Resets character initative
+function resetInitiative(character) {
+    character.Initiative = 0;
 }
-/* /Function that has characters roll for initiative, highest initiative roll is the starting character  */
+
+// Victory point system
+function victoryCounter(character) {
+    character.Victories += 1;
+}
 
 
+function updateStats() {
 
-// Toggle gameState start/end (Currently only displays and hides the characters)
-const startGameButton = document.getElementById("start-game-button")
-const endGameButton = document.getElementById("end-game-button")
-const characterContainer = document.getElementsByClassName("character-container")
+    // Updates Round count HTML element
+    roundCounterTitle.textContent = `Round: ${roundCounter}`
 
-startGameButton.addEventListener("click", () => {
-    toggleGameStateClasses(true)
-    startGame()
-})
+    // Textcontent Player Stats
+    playerNameDisplay.textContent = `${playerCharacter.Name}`
+    playerVictoriesDisplay.textContent = `Victories: ${playerCharacter.Victories}`
+    playerHealthDisplay.textContent = `Health: ${playerCharacter.Health}`
+    playerAttackDisplay.textContent = `Attack: ${playerCharacter.Attack}`
+    playerDefenseDisplay.textContent = `Defense: ${playerCharacter.Defense}`
 
-endGameButton.addEventListener("click", () => {
-    toggleGameStateClasses(false)
-    endGame()
-})
+    // Textcontent Enemy Stats
+    enemyNameDisplay.textContent = `${enemyCharacter.Name}`
+    enemyVictoryDisplay.textContent = `Victories ${enemyCharacter.Victories}`
+    enemyHealthDisplay.textContent = `Health: ${enemyCharacter.Health}`
+    enemyAttackDisplay.textContent = `Attack: ${enemyCharacter.Attack}`
+    enemyDefenseDisplay.textContent = `Defense: ${enemyCharacter.Defense}`
 
-function toggleGameStateClasses(gameStateStart) {
-    Array.from(characterContainer).forEach(parameter => {
-        if (gameStateStart) {
-            parameter.classList.remove("gameStateOff")
-            parameter.classList.add("gameStateStart")
+}
+
+
+// Player turn
+function playerAction(action) {
+    
+    // Player action ATTACK
+    if (action === "attack") {
+        dealDamage(playerCharacter)
+        takeDamage(enemyCharacter, playerCharacter.Attack)
+        
+        // Player Attack HTML element
+        const eventMessagePlayerAttack = document.createElement("p");
+        eventMessagePlayerAttack.className = "event-message";
+        eventLog.appendChild(eventMessagePlayerAttack)
+        // Player Attack textcontent
+        eventMessagePlayerAttack.textContent = `${playerCharacter.Name} deals ${playerCharacter.Attack} damage to ${enemyCharacter.Name}`
+
+        // Enemy Health HTML element
+        const eventMessageEnemyHealth = document.createElement("p")
+        eventMessageEnemyHealth.className = "event-message"
+        eventLog.appendChild(eventMessageEnemyHealth)
+        // Enemy Health textcontent
+        eventMessageEnemyHealth.textContent = `${enemyCharacter.Name} Health: ${enemyCharacter.Health}`
+        
+        // If statement checks if the enemyCharacter health is equal to or less than health points after the attack
+        if (enemyCharacter.Health <= 0) {
+            endGame();
+
         } else {
-            parameter.classList.remove("gameStateStart")
-            parameter.classList.add("gameStateOff")
+            roundCounter++
+            setTimeout(enemyTurn, 2000)
+        
         }
-    })
+
+
+    // Player Action HEAL
+    } else if (action === "heal") {
+        healHealth(playerCharacter)
+
+        // Player Heal HTML element
+        const eventMessagePlayerHeal = document.createElement("p")
+        eventMessagePlayerHeal.className = "event-message"
+        eventLog.appendChild(eventMessagePlayerHeal)
+        // Player Heal textcontent
+        eventMessagePlayerHeal.textContent = `${playerCharacter.Name} heals, ${playerCharacter.Name} health is now ${playerCharacter.Health}`
+
+        setTimeout(enemyTurn, 2000)
+    }
 }
-// /Toggle gameState start/end
 
 
+// Enemy Turn
+function enemyTurn() {
+    dealDamage(enemyCharacter)
+    takeDamage(playerCharacter, enemyCharacter.Attack)
 
-let gameState = "notStarted"
+    // Enemy Attack HTML element
+    const eventMessageEnemyAttack = document.createElement("p")
+    eventMessageEnemyAttack.className = "event-message"
+    eventLog.appendChild(eventMessageEnemyAttack)
+    // Enemy Attack textcontent
+    eventMessageEnemyAttack.textContent = `${enemyCharacter.Name} deals ${enemyCharacter.Attack} damage to ${playerCharacter.Name}`
+
+    // Player Health HTML element
+    const eventMessagePlayerHealth = document.createElement("p")
+    eventMessagePlayerHealth.className = "event-message"
+    eventLog.appendChild(eventMessagePlayerHealth)
+    // Player Health textcontent
+    eventMessagePlayerHealth.textContent = `${playerCharacter.Name} Health: ${playerCharacter.Health}`
+
+    // If statement checks if the playerCharacter health is equal to or less than health points after the attack 
+    if (playerCharacter.Health <= 0) {
+        endGame();
+    } else {
+        setTimeout(() => {
+            playerTurn = true;
+            actionAttackButton.disabled = false;
+            actionHealButton.disabled = false;
+            resetAttack(playerCharacter)
+            resetAttack(enemyCharacter)
+            roundCounter++
+            updateStats()
+        }, 2000);
+    }
+}
+
+// End Game 
+// Current state: Only displays the winner by text
+function endGame() {
+
+    //IF statement checks if either of the characters have reached 0 health points and announces a victor if one equals true 
+    if (playerCharacter.Health <= 0) {
+        roundCounterTitle.textContent = `${enemyCharacter.Name} is victorious!`
+        
+        const eventMessageResultStatus = document.createElement("p")
+        eventMessageResultStatus.className = "event-message"
+        eventLog.appendChild(eventMessageResultStatus)
+        
+        eventMessageResultStatus.textContent = `${enemyCharacter.Name} is victorious!`
+        
+        victoryCounter(enemyCharacter)
+        updateStats()
+        return console.log(`\n ${enemyCharacter.Name} is victorious!`)
+    
+    } else if (enemyCharacter.Health <= 0) {
+        roundCounterTitle.textContent = `${playerCharacter.Name} is victorious!`
+        
+        const eventMessageResultStatus = document.createElement("p")
+        eventMessageResultStatus.className = "event-message"
+        eventLog.appendChild(eventMessageResultStatus)
+
+        eventMessageResultStatus.textContent = `${playerCharacter.Name} is victorious!`
+        
+        victoryCounter(playerCharacter)
+        updateStats()
+        return console.log(`\n ${playerCharacter.Name} is victorious!`)
+    }
+    
+}
 
 
+// Reset Game Stats
+function resetGame() {
+
+    // Character Object default values
+    playerCharacter = {Name: "Adventurer", Attack: 0, Health: 25, Defense: 2, Initiative: 0, Victories: 0};
+    enemyCharacter = {Name: "Bandit", Attack: 0, Health: 30, Defense: 4, Initiative: 0, Victories: 0};
+    roundCounter = 1
+    resetInitiative(playerCharacter)
+    resetInitiative(enemyCharacter)
+    updateStats()
+
+    // Reset Message
+    const eventMessageReset = document.createElement("p")
+    eventMessageReset.className = "event-message"
+    eventLog.appendChild(eventMessageReset)
+    eventMessageReset.textContent = "Character stats have been reset." 
+    return console.log(`\n Character stats have been reset. \n`)
+}
 
 
+// Start Game function
 function startGame() {
+   
+    // Rolls for initiative
+    rollInitiative(playerCharacter)
+    rollInitiative(enemyCharacter)
 
-};
+    // IF statement checks if playerCharacter's initiative result is higher than enemyCharacter's result
+    // If true the player begins this game 
+    if (playerCharacter.Initiative > enemyCharacter.Initiative) {
+        playerTurn = true;
+        updateStats()
+        
+        const eventMessageInitiative = document.createElement("p")
+        eventMessageInitiative.className = "event-message"
+        eventLog.appendChild(eventMessageInitiative) 
 
-function endGame(playerHealth, monsterHealth) {
-    
-    if (playerHealth.Health <= 0) {
-        return `${playerCharacter.Name} has been defeated. ${monsterCharacter.Name} wins and earns 1 point.`
-    } else if (monsterHealth.Health <= 0) {
-        return `${monsterCharacter.Name} has been defeated. ${playerCharacter.Name} wins and earns 1 point.`
-    } else {
-        newRound()
+        eventMessageInitiative.textContent = `\n ${playerCharacter.Name} rolled an initative of ${playerCharacter.Initiative} and will start first! \n`
+        
+        return console.log(`\n ${playerCharacter.Name} rolled an initative of ${playerCharacter.Initiative} and will start first! \n`)
+
+    // IF statement checks if playerCharacter's initiative result is less than enemyCharacter's result
+    // If true enemyCharacter begins this game
+    } else if (playerCharacter.Initiative < enemyCharacter.Initiative) {
+        playerTurn = false;
+        updateStats()
+        
+        const eventMessageInitiative = document.createElement("p")
+        eventMessageInitiative.className = "event-message"
+        eventLog.appendChild(eventMessageInitiative) 
+
+        eventMessageInitiative.textContent = `\n ${enemyCharacter.Name} rolled an initiative of ${enemyCharacter.Initiative} and will start first! \n`
+        
+        //Necessary to let the function resolve the initiative rolls before enemyTurn is called. (Discovered the necessity after debugging.)
+        setTimeout(enemyTurn, 1000)
+
+        return console.log(`\n ${enemyCharacter.Name} rolled an initiative of ${enemyCharacter.Initiative} and will start first! \n`)
+
     }
-};
-
-/* function resetGame() {
-
-};
- */
-function newRound() {
-
 }
-
-
-function playerTurn() {
-
-};
-
-function monsterTurn() {
-
-};
-
-
-function eventLog() {
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //Saved for later in case it proves useful.
-/* function monsterActionAttack() {
-    const monsterAttackRoll = rollDie();
-    if (playerActionDefend()) {
-        const monsterAttackResult = Math.max(0, monsterAttackRoll - playerTemporaryDefense);
-        return `${monsterCharacter.Name} attacks ${playerCharacter.Name} for ${monsterAttackResult} damage!`;
-    } else {
-        const monsterAttackResult = Math.max(0, monsterAttackRoll - playerCharacter.Defense);
-        return `${monsterCharacter.Name} attacks ${playerCharacter.Name} for ${monsterAttackResult} damage!`;
-    }
-    
-}; */
